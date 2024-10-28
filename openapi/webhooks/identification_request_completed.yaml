@@ -1,0 +1,34 @@
+post:
+  summary: Identification request completed webhook
+  description: "Webhook triggered when an identification request is completed."
+  operationId: identificationRequestCompleted
+  security:
+    - HMAC: []
+  tags:
+    - Webhook
+  requestBody:
+    required: true
+    description: This is my test description
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            identification_request_id:
+              type: string
+              format: uuid
+              description: "The unique identifier for the identification request."
+            client_id:
+              type: string
+              description: The client ID associated with the request.
+              example: "oidc-b8b8b8b8-c88f-1111-b11d-ecf190aa4982-72"
+            reference:
+              type: string
+              description: A reference string for the identification request.
+              example: "123"
+          required:
+            - identification_request_id
+            - client_id
+  responses:
+    '200':
+      description: "Successfully processed the identification request completion."

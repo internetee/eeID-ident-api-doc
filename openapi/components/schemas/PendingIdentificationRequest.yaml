@@ -1,0 +1,52 @@
+type: object
+properties:
+  id:
+    type: string
+    format: uuid
+    description: The unique identifier for the identification request.
+  link:
+    type: string
+    format: uri
+    description: The link associated with the identification request.
+  link_expires_at:
+    type: string
+    format: date-time
+    description: The expiration date and time of the link.
+  claims_required:
+    type: array
+    description: A list of claims required for the identification request.
+    items:
+      type: object
+      properties:
+        type: 
+          type: string
+          description: The type of claim.
+          example: "sub"
+        value:
+          type: string
+          description: The value of the claim.
+          example: "EE30303039914"
+  completed_at:
+    type: string
+    format: date-time
+    description: The date and time when the request was completed.
+    example: null
+  status:
+    type: string
+    description: The current status of the identification request.
+    example: pending
+  created_at:
+    type: string
+    format: date-time
+    description: The date and time when the request was created.
+  result:
+    type: object
+    description: The result of the identification request.
+    example: {}
+  client_id:
+    type: string
+    description: The client ID associated with the request.
+    example: "oidc-b8b8b8b8-c88f-1111-b11d-ecf190aa4982-72"
+  reference:
+    type: string
+    description: A reference string for the identification request.

@@ -1,0 +1,87 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: eeID Identification Service API
+  termsOfService: https://meedia.internet.ee/files/Terms_of_use_eeID.pdf
+  contact:
+    name: Contact our support
+    email: info@internet.ee
+    url: https://eeid.ee
+  x-logo:
+    url: 'https://eeid.ee/images/logo.png'
+    altText: eeID
+  description: |
+    # Introduction
+
+    This API provides endpoints for managing authentication tokens and handling identification requests.
+    The authentication mechanism is based on OAuth2, using a token-based approach to secure access to
+    the identification requests. Clients must obtain a token by providing valid credentials to access
+    the protected resources.
+
+    The token has a limited lifespan and will expire after 120 seconds. Clients should handle
+    token expiration and generate a new one as necessary.
+tags:
+  - name: Access Token
+    description: "Endpoint for obtaining authentication token."
+  - name: Identification Requests
+    description: "Endpoints for managing identification requests."
+  - name: Webhook
+    description: |
+      A Webhook to receive notification about successful completion of created Identification Request. 
+      To be able to receive notification, this API needs to be implemented and deployed by the client. 
+      The webhook URL is configured by the client in the [eeID manager](https://eeid.ee) when creating the identification service and must contain the path `eeid/webhooks/identification_requests`.
+
+      To ensure the integrity and authenticity of the request, an HMAC signature is included in the request header. Clients must verify this webhook request as follows:
+
+      **Verifying the HMAC Signature**:
+        - Upon receiving the webhook, extract the `X-HMAC-Signature` from the request headers.
+        - Recreate the HMAC signature with the received payload and your `client_secret`.
+        - Compare the recreated signature with the signature from the header. If they match, the request is verified as authentic.
+        - Example in Ruby:
+          ```ruby
+          received_signature = request.headers['X-HMAC-Signature']
+          expected_signature = OpenSSL::HMAC.hexdigest('SHA256', secret_key, request.raw_post)
+          if received_signature != expected_signature
+            raise "Invalid HMAC signature"
+          end
+          ```
+
+      The event is considered acknowledged if the endpoint responds with a successful status code (`200`, `201` or `204`) within 10 seconds.
+      Any other status code or a lack of response is treated as a delivery failure, leading to up to 3 retries.
+      This may result in the same event being delivered multiple times in exceptional cases.
+servers:
+  - url: https://eeid.ee
+paths:
+  '/api/auth/v1/token':
+    $ref: 'paths/token.yaml'
+  '/api/ident/v1/identification_requests':
+    get:
+      $ref: 'paths/list_identification_requests.yaml'
+    post:
+      $ref: 'paths/create_identification_request.yaml'
+  '/api/ident/v1/identification_requests/{id}':
+    $ref: 'paths/show_identification_request.yaml'
+  '/api/ident/v1/identification_requests/{id}/proof_of_identity':
+    $ref: 'paths/get_proof_of_identity.yaml'
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: |
+        Clients must provide a Base64 encoded string of `client_id:client_secret` in the Authorization header, where:
+        
+        - **client_id**: The client ID provided to the identification service.
+        - **client_secret**: The client secret associated with the client ID.
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    HMAC:
+      type: "apiKey"
+      in: "header"
+      name: "X-HMAC-Signature"
+      description: "HMAC signature for securing the webhook request."
+webhooks:
+  identificationRequestCompleted:
+    $ref: 'webhooks/identification_request_completed.yaml'

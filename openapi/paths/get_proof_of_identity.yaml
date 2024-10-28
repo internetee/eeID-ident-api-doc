@@ -1,0 +1,59 @@
+get:
+  summary: Retrieve proof of identity
+  description: Returns the proof of identity document in PDF format for a specific identification request.
+  operationId: getProofOfIdentity
+  security:
+    - BearerAuth: []
+  tags:
+    - Identification Requests
+  parameters:
+    - name: Authorization
+      in: header
+      required: true
+      schema:
+        type: string
+        example: 'Bearer <TOKEN>'
+    - name: id
+      in: path
+      required: true
+      description: The unique identifier of the identification request.
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Successful response with the proof of identity document.
+      content:
+        application/pdf:
+          schema:
+            type: string
+            format: binary
+    '404':
+      description: Proof of identity not found.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Proof of identity not found"
+    '401':
+      description: Unauthorized access.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Unauthorized"
+    '500':
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "An error occurred"

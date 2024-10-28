@@ -1,0 +1,74 @@
+summary: Retrieve a list of identification requests
+description: This endpoint retrieves a paginated list of identification requests for the authenticated service.
+operationId: getIdentificationRequests
+security:
+  - BearerAuth: []
+tags:
+  - Identification Requests
+parameters:
+  - name: Authorization
+    in: header
+    required: true
+    schema:
+      type: string
+      example: 'Bearer <TOKEN>'
+  - name: page
+    in: query
+    description: The page number to retrieve.
+    required: false
+    schema:
+      type: integer
+      default: 1
+  - name: page_size
+    in: query
+    description: The number of items per page.
+    required: false
+    schema:
+      type: integer
+      default: 10
+responses:
+  '200':
+    description: A list of identification requests.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            page:
+              type: integer
+              description: The current page number (zero-based index).
+              example: 0
+            page_size:
+              type: integer
+              description: The number of items per page.
+              example: 10
+            total:
+              type: integer
+              description: The total number of identification requests.
+              example: 1
+            items:
+              type: array
+              items:
+                $ref: ../components/schemas/IdentificationRequest.yaml
+  '401':
+    description: Unauthorized access.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+              description: "Error message"
+              example: "Unauthorized"
+  '500':
+    description: Internal server error.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+              example: "An error occurred"
+

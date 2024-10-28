@@ -1,0 +1,59 @@
+get:
+  summary: Retrieve an identification request
+  description: Fetches the details of a specific identification request by its UUID.
+  operationId: getIdentificationRequest
+  security:
+    - BearerAuth: []
+  tags:
+    - Identification Requests
+  parameters:
+    - name: Authorization
+      in: header
+      required: true
+      schema:
+        type: string
+        example: 'Bearer <TOKEN>'
+    - name: id
+      in: path
+      required: true
+      description: The UUID of the identification request to retrieve.
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Successful retrieval of the identification request.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/IdentificationRequest.yaml
+    '401':
+      description: Unauthorized - Invalid or missing access token.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: A message indicating the unauthorized access.
+                example: Unauthorized
+    '404':
+      description: Identification request not found.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Request not found"
+    '500':
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "An error occurred"
