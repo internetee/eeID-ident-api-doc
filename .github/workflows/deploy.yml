@@ -14,6 +14,13 @@ jobs:
 
       - name: Build docs
         run: ./make.sh
+      
+      - name: Check if index.html exists
+        run: |
+          if [ ! -f index.html ]; then
+            echo "index.html does not exist!"
+            exit 1
+          fi
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
