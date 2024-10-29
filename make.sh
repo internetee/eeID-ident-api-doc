@@ -12,7 +12,10 @@ if [ ! -f index.html ]; then
 fi
 
 # Add favicon
-sed -i '' '8i\
-    <link rel="icon" type="image/png" href="docs/favicon.png"/>' index.html
+{
+    head -n 7 index.html
+    echo '    <link rel="icon" type="image/png" href="docs/favicon.png"/>'
+    tail -n +8 index.html
+} > temp.html && mv temp.html index.html
 
 echo -e "\nDone!"
