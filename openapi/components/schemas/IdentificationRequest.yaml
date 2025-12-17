@@ -46,15 +46,31 @@ properties:
     type: object
     description: The result of the identification request.
     properties:
+      acr:
+        type: string
+        example: "high"
       sub:
         type: string
         example: "EE30303039914"
+      auth_time:
+        type: integer
+        example: 1734432000
       given_name:
         type: string
         example: "OK"
-      last_name:
+      family_name:
         type: string
         example: "TESTNUMBER"
+      date_of_birth:
+        type: string
+        format: date
+        example: "2000-01-01"
+      expiration_time:
+        type: integer
+        example: 1734432000
+      authentication_type:
+        type: string
+        example: "ID_CARD"
   client_id:
     type: string
     description: The client ID associated with the request.
