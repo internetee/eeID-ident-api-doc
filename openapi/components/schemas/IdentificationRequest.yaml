@@ -49,11 +49,14 @@ properties:
       acr:
         type: string
         example: "high"
+        description: The level of authentication based on the eIDAS LoA (level of assurance).
       sub:
         type: string
         example: "EE30303039914"
+        description: The national id or document number of the authenticated user.
       auth_time:
         type: integer
+        format: unix-timestamp
         example: 1734432000
       given_name:
         type: string
@@ -67,10 +70,13 @@ properties:
         example: "2000-01-01"
       expiration_time:
         type: integer
+        format: unix-timestamp
         example: 1734432000
+        description: The expiration time of the identification result as a Unix timestamp (based on the document or certificate validity period).
       authentication_type:
         type: string
         example: "ID_CARD"
+        description: The type of authentication used for the identification process.
   client_id:
     type: string
     description: The client ID associated with the request.
