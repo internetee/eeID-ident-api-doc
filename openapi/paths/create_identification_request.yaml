@@ -41,6 +41,23 @@ requestBody:
                   type: string
                   description: The value of the claim.
                   example: "EE30303039914"
+          reason:
+            type: string
+            description: The reason for the identification request.
+            example: "Test Reason"
+          reason_translations:
+            type: object
+            description: The translations of the reason for the identification request.
+            properties:
+              en:
+                type: string
+                description: The translation of the reason for the identification request in English.
+              et:
+                type: string
+                description: The translation of the reason for the identification request in Estonian.
+              ru:
+                type: string
+                description: The translation of the reason for the identification request in Russian.
         required:
           - claims_required
 responses:
