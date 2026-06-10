@@ -20,6 +20,16 @@ info:
 
     The token has a limited lifespan and will expire after 120 seconds. Clients should handle
     token expiration and generate a new one as necessary.
+
+    ## Claims comparison
+
+    When an identification request is created with `claims_required`, eeID compares the authenticated user's identity against those claims. Authentication success is separate from claims match:
+
+    - A request becomes `completed` when the end-user successfully authenticates, even if some claims do not match.
+    - Check `claims_matched`, `mismatched_claims`, and `claims_comparison_errors` on completed requests to see the comparison outcome.
+    - Your service is responsible for deciding how to handle mismatches (for example manual review, approval, or rejection).
+    - Proof of identity (POI) is generated and the completion webhook is sent for all successfully authenticated requests, regardless of claim match.
+    - After the first successful authentication, the identification link expires. The end-user cannot use the same link to retry; create a new request if another identification is needed.
 tags:
   - name: Access Token
     description: "Endpoint for obtaining authentication token."

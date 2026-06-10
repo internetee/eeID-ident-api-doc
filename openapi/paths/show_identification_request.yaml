@@ -1,6 +1,10 @@
 get:
   summary: Retrieve an identification request
-  description: Fetches the details of a specific identification request by its UUID.
+  description: |
+    Fetches the details of a specific identification request by its UUID.
+
+    For completed requests, check `claims_matched` to see whether the authenticated user's data matched the
+    `claims_required` provided at creation time. Use `mismatched_claims` and `claims_comparison_errors` for details.
   operationId: getIdentificationRequest
   security:
     - BearerAuth: []

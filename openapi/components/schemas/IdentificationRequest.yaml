@@ -1,103 +1,109 @@
-type: object
-properties:
-  id:
-    type: string
-    format: uuid
-    description: The unique identifier for the identification request.
-  link:
-    type: string
-    format: uri
-    description: The link associated with the identification request.
-  link_expires_at:
-    type: string
-    format: date-time
-    description: The expiration date and time of the link.
-  claims_required:
-    type: array
-    description: A list of claims required for the identification request.
-    items:
-      type: object
-      properties:
-        type: 
-          type: string
-          description: The type of claim.
-          example: "sub"
-        value:
-          type: string
-          description: The value of the claim.
-          example: "EE30303039914"
-  completed_at:
-    type: string
-    format: date-time
-    description: The date and time when the request was completed.
-  status:
-    type: string
-    description: The current status of the identification request.
-    example: completed
-    enum:
-      - pending
-      - completed
-      - expired
-  created_at:
-    type: string
-    format: date-time
-    description: The date and time when the request was created.
-  result:
-    type: object
-    description: The result of the identification request.
+allOf:
+  - type: object
     properties:
-      acr:
+      id:
         type: string
-        example: "high"
-        description: The level of authentication based on the eIDAS LoA (level of assurance).
-      sub:
+        format: uuid
+        description: The unique identifier for the identification request.
+      link:
         type: string
-        example: "EE30303039914"
-        description: The national id or document number of the authenticated user.
-      auth_time:
-        type: integer
-        format: unix-timestamp
-        example: 1734432000
-      given_name:
+        format: uri
+        description: The link associated with the identification request.
+      link_expires_at:
         type: string
-        example: "OK"
-      family_name:
+        format: date-time
+        description: The expiration date and time of the link.
+      claims_required:
+        type: array
+        description: A list of claims required for the identification request.
+        items:
+          type: object
+          properties:
+            type:
+              type: string
+              description: The type of claim.
+              example: "sub"
+            value:
+              type: string
+              description: The value of the claim.
+              example: "EE30303039914"
+      completed_at:
         type: string
-        example: "TESTNUMBER"
-      date_of_birth:
+        format: date-time
+        description: The date and time when the request was completed.
+      status:
         type: string
-        format: date
-        example: "2000-01-01"
-      expiration_time:
-        type: integer
-        format: unix-timestamp
-        example: 1734432000
-        description: The expiration time of the identification result as a Unix timestamp (based on the document or certificate validity period).
-      authentication_type:
+        description: |
+          The current status of the identification request.
+
+          `completed` means the end-user successfully authenticated — not necessarily that all required claims matched.
+          Use `claims_matched` to determine whether the authenticated data matched your expectations.
+        example: completed
+        enum:
+          - pending
+          - completed
+          - expired
+      created_at:
         type: string
-        example: "ID_CARD"
-        description: The type of authentication used for the identification process.
-  client_id:
-    type: string
-    description: The client ID associated with the request.
-    example: "oidc-b8b8b8b8-c88f-1111-b11d-ecf190aa4982-72"
-  reference:
-    type: string
-    description: A reference string for the identification request.
-  reason:
-    type: string
-    description: The reason for the identification request.
-    example: "Test Reason"
-  reason_translations:
-    type: object
-    description: The translations of the reason for the identification request.
-    properties:
-      en:
+        format: date-time
+        description: The date and time when the request was created.
+      result:
+        type: object
+        description: The authenticated user's identity data. Present when the request is completed.
+        properties:
+          acr:
+            type: string
+            example: "high"
+            description: The level of authentication based on the eIDAS LoA (level of assurance).
+          sub:
+            type: string
+            example: "EE30303039914"
+            description: The national id or document number of the authenticated user.
+          auth_time:
+            type: integer
+            format: unix-timestamp
+            example: 1734432000
+          given_name:
+            type: string
+            example: "OK"
+          family_name:
+            type: string
+            example: "TESTNUMBER"
+          date_of_birth:
+            type: string
+            format: date
+            example: "2000-01-01"
+          expiration_time:
+            type: integer
+            format: unix-timestamp
+            example: 1734432000
+            description: The expiration time of the identification result as a Unix timestamp (based on the document or certificate validity period).
+          authentication_type:
+            type: string
+            example: "ID_CARD"
+            description: The type of authentication used for the identification process.
+      client_id:
         type: string
-        description: The translation of the reason for the identification request in English.
-      et:
+        description: The client ID associated with the request.
+        example: "oidc-b8b8b8b8-c88f-1111-b11d-ecf190aa4982-72"
+      reference:
         type: string
-        description: The translation of the reason for the identification request in Estonian.
-      ru:
+        description: A reference string for the identification request.
+      reason:
         type: string
-        description: The translation of the reason for the identification request in Russian.
+        description: The reason for the identification request.
+        example: "Test Reason"
+      reason_translations:
+        type: object
+        description: The translations of the reason for the identification request.
+        properties:
+          en:
+            type: string
+            description: The translation of the reason for the identification request in English.
+          et:
+            type: string
+            description: The translation of the reason for the identification request in Estonian.
+          ru:
+            type: string
+            description: The translation of the reason for the identification request in Russian.
+  - $ref: ./ClaimsComparison.yaml

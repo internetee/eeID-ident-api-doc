@@ -1,6 +1,10 @@
 post:
   summary: Identification request completed webhook
-  description: "Webhook triggered when an identification request is completed."
+  description: |
+    Webhook triggered when an identification request is completed after the end-user successfully authenticates.
+
+    This fires for both matched and mismatched claims. Retrieve the identification request to read `claims_matched`,
+    `mismatched_claims`, and `claims_comparison_errors`, then compare `result` against your own records as needed.
   operationId: identificationRequestCompleted
   security:
     - HMAC: []
