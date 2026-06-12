@@ -30,6 +30,12 @@ info:
     - Your service is responsible for deciding how to handle mismatches (for example manual review, approval, or rejection).
     - Proof of identity (POI) is generated and the completion webhook is sent for all successfully authenticated requests, regardless of claim match.
     - After the first successful authentication, the identification link expires. The end-user cannot use the same link to retry; create a new request if another identification is needed.
+
+    ## Document-based identification result fields
+
+    For document-based identification, the `result` object may also include `country`, `id_number`, and
+    `document_number`. These fields are not present for other authentication methods. The `sub` claim
+    always comes from OIDC userinfo.
 tags:
   - name: Access Token
     description: "Endpoint for obtaining authentication token."
