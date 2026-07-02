@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  version: 1.0.0
+  version: 1.1.0
   title: eeID Identification Service API
   termsOfService: https://meedia.internet.ee/files/Terms_of_use_eeID.pdf
   contact:
