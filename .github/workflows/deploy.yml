@@ -20,5 +20,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .
-          force_orphan: true
+          keep_files: true
           exclude_assets: '.github,openapi,redocly.yaml,LICENSE,README.md,make.sh'
