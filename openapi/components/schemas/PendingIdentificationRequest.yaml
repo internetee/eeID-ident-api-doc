@@ -33,7 +33,11 @@ properties:
     example: null
   status:
     type: string
-    description: The current status of the identification request.
+    description: |
+      The current status of the identification request.
+
+      `completed` means the end-user successfully authenticated — not necessarily that all required claims matched.
+      Use `claims_matched` to determine whether the authenticated data matched your expectations.
     example: pending
   created_at:
     type: string
@@ -67,3 +71,19 @@ properties:
       ru:
         type: string
         description: The translation of the reason for the identification request in Russian.
+  claims_matched:
+    type:
+      - boolean
+      - 'null'
+    description: Always `null` while the request is pending.
+    example: null
+  mismatched_claims:
+    type: object
+    description: Always an empty object while the request is pending.
+    example: {}
+  claims_comparison_errors:
+    type: array
+    description: Always an empty array while the request is pending.
+    items:
+      type: string
+    example: []

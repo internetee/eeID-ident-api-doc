@@ -1,0 +1,41 @@
+type: object
+properties:
+  claims_matched:
+    type:
+      - boolean
+      - 'null'
+    description: |
+      Whether all non-blank required claims matched the authenticated user's data.
+
+      - `true` — all required claims matched (or no claims were provided for comparison).
+      - `false` — at least one required claim mismatched.
+      - `null` — the request is not yet completed; comparison has not run.
+    example: true
+  mismatched_claims:
+    type: object
+    description: |
+      Details of claims that did not match, keyed by claim type (for example `sub`, `name`, `birthdate`, `country`).
+      An empty object when all claims matched or the request is not yet completed.
+    additionalProperties:
+      type: object
+      properties:
+        expected:
+          type: string
+          description: The value provided when creating the identification request.
+        actual:
+          type: string
+          description: The value from the authenticated user's identity.
+      required:
+        - expected
+        - actual
+    example:
+      sub:
+        expected: "EE12345678901"
+        actual: "EE30303039914"
+  claims_comparison_errors:
+    type: array
+    description: Human-readable comparison error messages. An empty array when all claims matched or the request is not yet completed.
+    items:
+      type: string
+    example:
+      - "Value mismatch for claim 'sub', expected 'EE12345678901', got 'EE30303039914'"

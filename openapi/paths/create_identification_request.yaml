@@ -1,5 +1,10 @@
 summary: Create an identification request
-description: This endpoint allows a service to create a new identification request. The request must include claims required for the identification process.
+description: |
+  This endpoint creates a new identification request.
+
+  `claims_required` must always be present. In normal matching mode, provide expected
+  claim values to compare against the authenticated user's data. In discovery mode,
+  you may provide supported claim types with blank or omitted values.
 operationId: createIdentificationRequest
 security:
   - BearerAuth: []
@@ -24,7 +29,12 @@ requestBody:
             description: A unique reference for the identification request.
           claims_required:
             type: array
-            description: An array of claims required for the identification process.
+            description: |
+              A required array of supported claims for the identification request.
+
+              The array itself must be present and contain at least one supported claim object.
+              In discovery mode, claim `value` may be blank or omitted. Blank-valued claims are
+              treated as discovery hints and are not compared for mismatch.
             items:
               type: object
               properties:
